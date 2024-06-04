@@ -1,7 +1,21 @@
 import express from 'express';
+import connectDB from './db.js';
+import 'dotenv/config';
+
 const app = express ();
-const port = 3000;
+
 app.get ('/', (req, res) => res.send ('Hola Mundo!'));
-app.listen (port, () =>
-  console.log (`Servidor corriendo en http://localhost:${port}`)
-);
+
+async function startApp () {
+  const port = process.env.PORT || 3000;
+  try {
+    await connectDB ();
+    app.listen (port, () =>
+      console.log (`Servidor corriendo en http://localhost:${port}`)
+    );
+  } catch (error) {
+    console.error ('Error de conexión a la base de datos', error);
+  }
+}
+
+startApp ();
