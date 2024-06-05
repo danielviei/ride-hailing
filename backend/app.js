@@ -1,10 +1,17 @@
-import express from 'express';
-import connectDB from './db.js';
+import express, {json} from 'express';
 import 'dotenv/config';
+import apiRouter from './routes/api.js';
+import connectDB from './db.js';
 
 const app = express ();
 
-app.get ('/', (req, res) => res.send ('Hola Mundo!'));
+app.disable ('x-powered-by');
+app.use (json ());
+app.use ('/api', apiRouter);
+app.use ((err, req, res, next) => {
+  console.error (err);
+  res.status (500).json ({message: 'Error del servidor'});
+});
 
 async function startApp () {
   const port = process.env.PORT || 3000;
