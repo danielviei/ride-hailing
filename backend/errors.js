@@ -25,3 +25,17 @@ export class AuthenticationError extends Error {
     this.name = 'AuthenticationError';
   }
 }
+
+export class CastError extends Error {
+  constructor (message) {
+    super (message);
+    this.name = 'CastError';
+  }
+}
+
+export class NotFoundError extends Error {
+  constructor (message) {
+    super (message);
+    this.name = 'NotFoundError';
+  }
+}
