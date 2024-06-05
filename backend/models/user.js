@@ -1,5 +1,6 @@
 import {Schema, model} from 'mongoose';
 import bcrypt from 'mongoose-bcrypt';
+import {AuthenticationError} from '../errors.js';
 
 const UserSchema = new Schema (
   {
@@ -41,5 +42,16 @@ UserSchema.plugin (bcrypt);
 UserSchema.virtual ('id').get (function () {
   return this._id.toHexString ();
 });
+
+UserSchema.statics.authenticate = async function (email, password) {
+  const user = await this.findOne ({email});
+  if (user) {
+    const isMatch = await user.verifyPassword (password);
+    if (isMatch) {
+      return user;
+    }
+  }
+  throw new AuthenticationError ('Autenticación fallida');
+};
 
 export default model ('User', UserSchema);

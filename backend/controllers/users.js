@@ -1,7 +1,7 @@
 import {ZodError} from 'zod';
 import User from '../models/user.js';
 import {validateUser} from '../schemas/users.js';
-import {ValidationError, DuplicateError} from '../errors.js';
+import {ValidationError, DuplicateError, ServerError} from '../errors.js';
 
 export default class UserService {
   async createUser (data) {
