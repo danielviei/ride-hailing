@@ -24,4 +24,20 @@ carsRouter.post ('/', async (req, res, next) => {
   }
 });
 
+carsRouter.patch ('/:id', async (req, res, next) => {
+  try {
+    const car = await carService.changeStatus (req.params.id, req.body.status);
+    res.json (car);
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status (400).json (JSON.parse (error.message));
+    } else if (error instanceof CastError) {
+      return res.status (400).json ({message: error.message});
+    } else if (error instanceof NotFoundError) {
+      return res.status (404).json ({message: error.message});
+    }
+    next (error);
+  }
+});
+
 export default carsRouter;
