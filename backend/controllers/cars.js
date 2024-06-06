@@ -6,6 +6,7 @@ import {
   DuplicateError,
   CastError,
   NotFoundError,
+  ServerError,
 } from '../errors.js';
 
 export default class CarService {
@@ -18,8 +19,8 @@ export default class CarService {
 
       return car.toJSON ();
     } catch (error) {
-      // Error en la validación de los datos
       if (error instanceof ZodError) {
+        // Error en la validación de los datos
         const errorMessages = JSON.parse (error.message);
         const errorObject = errorMessages.reduce ((acc, curr) => {
           acc[curr.path[0]] = curr.message;
@@ -30,7 +31,6 @@ export default class CarService {
         // Código de error 11000 indica un error de duplicado en MongoDB
         throw new DuplicateError ('El correo electrónico ya está en uso.');
       }
-      console.error (error);
       throw new ServerError ('Error del servidor');
     }
   }
@@ -61,6 +61,41 @@ export default class CarService {
       } else if (error instanceof NotFoundError) {
         throw new NotFoundError ('Carro no encontrado');
       }
+      throw new ServerError ('Error del servidor');
+    }
+  }
+
+  async getCarById (id) {
+    try {
+      const car = await Car.findById (id);
+      if (!car) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
+      return car;
+    } catch (error) {
+      if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        throw new CastError ('ID de carro inválido');
+      } else if (error instanceof NotFoundError) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
+      throw new ServerError ('Error del servidor');
+    }
+  }
+
+  async getAllCars (page, limit) {
+    try {
+      const skip = (page - 1) * limit;
+      const cars = await Car.find ().skip (skip).limit (limit);
+      const total = await Car.countDocuments();
+
+      return {
+        next: page * limit < total ? page + 1 : null,
+        previous: page > 1 ? page - 1 : null,
+        results: cars,
+        total: total,
+      };
+    } catch (error) {
+      throw new ServerError ('Error del servidor');
     }
   }
 }
