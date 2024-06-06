@@ -1,4 +1,5 @@
 import {Schema, model} from 'mongoose';
+import { string } from 'zod';
 
 const CarSchema = new Schema (
   {
@@ -13,6 +14,12 @@ const CarSchema = new Schema (
     year: {
       type: Number,
       required: true,
+      validate: {
+        validator: function (v) {
+          return /\d{4}/.test (v);
+        },
+        message: 'El año debe ser un número de 4 dígitos',
+      },
     },
     status: {
       type: String,
