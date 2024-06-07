@@ -22,6 +22,7 @@
 <script>
 import TextField from "../components/TextField.vue";
 import PasswordField from "../components/PasswordField.vue";
+import { login } from "@/api/auth";
 
 export default {
   name: "UserLogin",
@@ -38,7 +39,16 @@ export default {
   },
   methods: {
     login() {
-      console.log("Login", this.email, this.password);
+      login(this.email, this.password)
+        .then(() => {
+          this.$router.push({ name: "Home" });
+        })
+        .catch((error) => {
+          if (!error.response) {
+            return;
+          }
+          this.errorMessage = error.response.data.message;
+        });
     },
   },
 };
