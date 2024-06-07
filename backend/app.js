@@ -1,14 +1,16 @@
 import express, {json} from 'express';
+import jwt from 'jsonwebtoken';
+import {UnauthorizedError} from 'express-jwt';
 import 'dotenv/config';
 import apiRouter from './routes/api.js';
 import connectDB from './db.js';
-import jwt from 'jsonwebtoken';
-import {UnauthorizedError} from 'express-jwt';
+import corsMiddleware from './middlewares/cors.js';
 
 const app = express ();
 
 app.disable ('x-powered-by');
 app.use (json ());
+app.use (corsMiddleware);
 app.use ('/api', apiRouter);
 app.use ((err, req, res, next) => {
   if (
