@@ -1,0 +1,45 @@
+<template>
+  <div class="w-full max-w-xs mx-auto mt-20">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <TextField id="email" label="Email" v-model="email" />
+      <PasswordField id="password" label="Password" v-model="password" />
+
+      <p class="text-red-500 p-4">{{ errorMessage }}</p>
+
+      <div class="flex items-center justify-center">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          @click="login"
+        >
+          Sign In
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import TextField from "../components/TextField.vue";
+import PasswordField from "../components/PasswordField.vue";
+
+export default {
+  name: "UserLogin",
+  components: {
+    TextField,
+    PasswordField,
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      errorMessage: "",
+    };
+  },
+  methods: {
+    login() {
+      console.log("Login", this.email, this.password);
+    },
+  },
+};
+</script>
