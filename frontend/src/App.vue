@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container w-full">
+  <div id="app" class="w-full">
     <AppHeader />
     <main>
       <RouterView />
