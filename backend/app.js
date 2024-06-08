@@ -20,7 +20,7 @@ app.use ((err, req, res, next) => {
     return res.status (401).json ({message: 'Token inválido'});
   }
   console.error (err);
-  return res.json (500).json ({message: 'Error del servidor'});
+  return res.status (500).json ({message: 'Error del servidor'});
 });
 
 async function startApp () {

@@ -19,6 +19,7 @@ export default class CarService {
 
       return car.toJSON ();
     } catch (error) {
+      console.log(error);
       if (error instanceof ZodError) {
         // Error en la validación de los datos
         const errorMessages = JSON.parse (error.message);
