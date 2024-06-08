@@ -9,7 +9,7 @@
       @input="updateValue($event.target.value)"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       type="password"
-      placeholder="Enter password"
+      :placeholder="placeholder"
     />
   </div>
 </template>
@@ -28,6 +28,10 @@ export default {
     modelValue: {
       type: String,
       required: true,
+    },
+    placeholder: {
+      type: String,
+      default: "Enter text",
     },
   },
   methods: {

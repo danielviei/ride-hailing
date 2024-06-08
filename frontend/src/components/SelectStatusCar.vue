@@ -3,14 +3,18 @@
     <label :for="id" class="block text-gray-700 text-sm font-bold mb-2">
       {{ label }}
     </label>
-    <input
+    <select
       :id="id"
       :value="modelValue"
       @input="updateValue($event.target.value)"
       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      :type="type"
-      :placeholder="placeholder"
-    />
+      placeholder="Seleccione un estado"
+    >
+      <option value="" disabled v-if="!modelValue">Seleccione un estado</option>
+      <option value="disponible">Disponible</option>
+      <option value="en servicio">En servicio</option>
+      <option value="en mantenimiento">En mantenimiento</option>
+    </select>
   </div>
 </template>
 
@@ -26,25 +30,13 @@ export default {
       required: true,
     },
     modelValue: {
-      type: [String, Number],
+      type: String,
       required: true,
-    },
-    placeholder: {
-      type: String,
-      default: "Enter text",
-    },
-    type: {
-      type: String,
-      default: "text",
+      default: "disponible",
     },
   },
   methods: {
-    updateValue(newValue) {
-      console.log(newValue);
-      let value = newValue;
-      if (this.type === "number") {
-        value = Number(value);
-      }
+    updateValue(value) {
       this.$emit("update:modelValue", value);
     },
   },
