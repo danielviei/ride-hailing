@@ -1,8 +1,8 @@
 import {z} from 'zod';
 
 const CarSchema = z.object ({
-  brand: z.string (),
-  model: z.string (),
+  brand: z.string ().min(1),
+  model: z.string ().min(1),
   year: z.number ().int ().refine (year => /^\d{4}$/.test (year), {
     message: 'El año debe ser un número de 4 dígitos',
   }),
