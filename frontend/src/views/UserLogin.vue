@@ -1,8 +1,18 @@
 <template>
   <div class="w-full max-w-xs mx-auto mt-20">
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <TextField id="email" label="Email" v-model="email" />
-      <PasswordField id="password" label="Password" v-model="password" />
+      <TextField
+        id="email"
+        label="Email"
+        v-model="email"
+        placeholder="Ingrese su correo electrónico"
+      />
+      <PasswordField
+        id="password"
+        label="Password"
+        v-model="password"
+        placeholder="Ingrese su contraseña"
+      />
 
       <p class="text-red-500 p-4">{{ errorMessage }}</p>
 

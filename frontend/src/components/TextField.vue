@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     updateValue(newValue) {
-      console.log(newValue);
       let value = newValue;
       if (this.type === "number") {
         value = Number(value);
