@@ -19,7 +19,7 @@ export default class CarService {
 
       return car.toJSON ();
     } catch (error) {
-      console.log(error);
+      console.log (error);
       if (error instanceof ZodError) {
         // Error en la validación de los datos
         const errorMessages = JSON.parse (error.message);
@@ -87,7 +87,7 @@ export default class CarService {
     try {
       const skip = (page - 1) * limit;
       const cars = await Car.find ().skip (skip).limit (limit);
-      const total = await Car.countDocuments();
+      const total = await Car.countDocuments ();
 
       return {
         next: page * limit < total ? page + 1 : null,
@@ -96,6 +96,51 @@ export default class CarService {
         total: total,
       };
     } catch (error) {
+      throw new ServerError ('Error del servidor');
+    }
+  }
+
+  async deleteCar (id) {
+    try {
+      const car = await Car.findByIdAndDelete (id);
+      if (!car) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
+      return car;
+    } catch (error) {
+      if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        throw new CastError ('ID de carro inválido');
+      } else if (error instanceof NotFoundError) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
+      throw new ServerError ('Error del servidor');
+    }
+  }
+
+  async updateCar (id, data) {
+    try {
+      const validatedData = validateCar (data);
+      const car = await Car.findByIdAndUpdate (id, validatedData, {
+        new: true,
+        runValidators: true,
+      });
+      if (!car) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
+      return car;
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const errorMessages = JSON.parse (error.message);
+        const errorObject = errorMessages.reduce ((acc, curr) => {
+          acc[curr.path[0]] = curr.message;
+          return acc;
+        }, {});
+        throw new ValidationError (JSON.stringify (errorObject));
+      } else if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        throw new CastError ('ID de carro inválido');
+      } else if (error instanceof NotFoundError) {
+        throw new NotFoundError ('Carro no encontrado');
+      }
       throw new ServerError ('Error del servidor');
     }
   }

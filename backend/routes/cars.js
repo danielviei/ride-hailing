@@ -1,4 +1,4 @@
-import { expressjwt } from "express-jwt";
+import {expressjwt} from 'express-jwt';
 import {Router} from 'express';
 import CarService from '../controllers/cars.js';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../errors.js';
 
 const secret = process.env.JWT_SECRET;
-const protectRoute = expressjwt({ secret, algorithms: ['HS256'] });
+const protectRoute = expressjwt ({secret, algorithms: ['HS256']});
 
 const carsRouter = Router ();
 const carService = new CarService ();
@@ -61,6 +61,36 @@ carsRouter.patch ('/:id', protectRoute, async (req, res, next) => {
     if (error instanceof ValidationError) {
       return res.status (400).json (JSON.parse (error.message));
     } else if (error instanceof CastError) {
+      return res.status (400).json ({message: error.message});
+    } else if (error instanceof NotFoundError) {
+      return res.status (404).json ({message: error.message});
+    }
+    next (error);
+  }
+});
+
+carsRouter.put ('/:id', protectRoute, async (req, res, next) => {
+  try {
+    const car = await carService.updateCar (req.params.id, req.body);
+    return res.json (car);
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status (400).json (JSON.parse (error.message));
+    } else if (error instanceof CastError) {
+      return res.status (400).json ({message: error.message});
+    } else if (error instanceof NotFoundError) {
+      return res.status (404).json ({message: error.message});
+    }
+    next (error);
+  }
+});
+
+carsRouter.delete ('/:id', protectRoute, async (req, res, next) => {
+  try {
+    await carService.deleteCar (req.params.id);
+    res.json ({message: 'Carro eliminado'});
+  } catch (error) {
+    if (error instanceof CastError) {
       return res.status (400).json ({message: error.message});
     } else if (error instanceof NotFoundError) {
       return res.status (404).json ({message: error.message});

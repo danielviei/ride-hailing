@@ -16,7 +16,7 @@ const routes = [
     component: CarsHome,
   },
   {
-    path: '/car/create',
+    path: '/car/:id',
     name: 'CarCreate',
     component: CarCreate,
   },

@@ -22,3 +22,25 @@ export async function changeCarStatus (carId, status) {
   await assertApiError (resp);
   return resp.data;
 }
+
+export async function getCarById (carId) {
+  const resp = await api.get (`/cars/${carId}`);
+  await assertApiError (resp);
+  return resp.data;
+}
+
+export async function deleteCar (carId) {
+  const resp = await api.delete (`/cars/${carId}`, makeAuthFetchOptions ());
+  await assertApiError (resp);
+  return resp.data;
+}
+
+export async function updateCar (carId, carData) {
+  const resp = await api.put (
+    `/cars/${carId}`,
+    carData,
+    makeAuthFetchOptions ()
+  );
+  await assertApiError (resp);
+  return resp.data;
+}
