@@ -32,7 +32,7 @@
           placeholder="Ingrese el año"
         />
         <p v-if="errors?.year" class="text-red-500 p-4">
-          El año debe tener 4 dígitos
+          El año debe estar entre 1900 y 2100
         </p>
         <SelectStatusCar
           id="status"
