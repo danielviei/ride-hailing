@@ -1,16 +1,18 @@
-# Ride Hailing
+# Ride Hailing 🚗
 
-Ride Hailing es una aplicación web que permite a los usuarios gestionar su flota de vehículos. Puedes ver qué vehículos tienes y el estado actual de cada uno de ellos.
+Ride Hailing es una aplicación web que permite a los usuarios gestionar su flota de vehículos. Con esta aplicación, puedes tener un control total sobre tus vehículos y estar al tanto del estado actual de cada uno de ellos.
 
-## Requisitos
+## 📋 Requisitos
+
+Para ejecutar esta aplicación, necesitarás tener instalado lo siguiente en tu sistema:
 
 - Node.js (v20 o superior)
 - npm (v10 o superior)
 - MongoDB
 
-## Instalación
+## 🚀 Instalación
 
-Para instalar las dependencias del proyecto, ejecuta los siguientes comandos:
+Para instalar las dependencias del proyecto, ejecuta los siguientes comandos en tu terminal:
 
 ```bash
 npm install
@@ -18,15 +20,15 @@ npm run install:backend
 npm run install:frontend
 ```
 
-puedes instalar todas las dependencias a la vez con:
+Alternativamente, puedes instalar todas las dependencias a la vez con:
 
 ```bash
 npm run install:all
 ```
 
-## Configuración
+## ⚙️ Configuración
 
-Para configurar la aplicación, necesitarás establecer las siguientes variables de entorno:
+Antes de poder ejecutar la aplicación, necesitarás establecer las siguientes variables de entorno:
 
 ### Conexión a MongoDB
 
@@ -36,7 +38,7 @@ Para configurar la aplicación, necesitarás establecer las siguientes variables
 - `MONGODB_PORT`: El puerto en el que se está ejecutando tu base de datos MongoDB.
 - `MONGODB_DB`: El nombre de la base de datos MongoDB a la que te quieres conectar.
 
-Asegúrate de que el usuario y la contraseña proporcionados para MongoDB tienen los permisos necesarios para acceder a la base de datos especificada.
+⚠️ Asegúrate de que el usuario y la contraseña proporcionados para MongoDB tienen los permisos necesarios para acceder a la base de datos especificada.
 
 ### Secret para JWT
 
@@ -50,7 +52,15 @@ Asegúrate de que el usuario y la contraseña proporcionados para MongoDB tienen
 
 - `VUE_APP_API_URL`: La URL base de tu API. Esto se utilizará para hacer todas las solicitudes a tu API desde el frontend.
 
-## Uso
+Estas variables de entorno se pueden establecer en un archivo .env en la raíz del proyecto y con el comando:
+
+```bash
+npm run copy:env
+```
+
+Podrás copiar el archivo en ambas carpetas (backend y frontend), para que puedan ser tomadas al momento de iniciar los proyectos.
+
+## 🎮 Uso
 
 Para iniciar el servidor y el cliente al mismo tiempo, ejecuta:
 
@@ -70,15 +80,15 @@ Para iniciar solo el frontend, ejecuta:
 npm run frontend:serve
 ```
 
-Para iniciar el servidor y el cliente en modo de desarrollo, ejecuta
+##  🔨 Desarrollo
 
-## Desarrollo
+Para iniciar el servidor y el cliente en modo de desarrollo, ejecuta
 
 ```bash
 npm run dev
 ```
 
-## Construcción
+## 🏗️ Construcción
 
 ```bash
 npm run build
