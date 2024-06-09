@@ -4,10 +4,27 @@
       <h1 class="text-xl">Ride Hailing</h1>
     </RouterLink>
     <div>
-      <span v-if="user">{{ `Hola, ${user.name}` }}</span>
+      <div v-if="user" class="flex gap-2 items-center">
+        <span>{{ `Hola, ${user.name}` }}</span>
+        <button title="Cerrar sesión" @click="userStore.logout">
+          <svg
+            class="h-6 w-6 ml-2"
+            viewBox="0 0 15 15"
+            fill="none"
+            stroke="white"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.5 7.5L10.5 10.75M13.5 7.5L10.5 4.5M13.5 7.5L4 7.5M8 13.5H1.5L1.5 1.5L8 1.5"
+            />
+          </svg>
+        </button>
+      </div>
       <div v-else class="flex gap-2">
         <RouterLink to="/login">Iniciar sesión</RouterLink>
-        <RouterLink class="hidden sm:block" to="/register">Registrarse</RouterLink>
+        <RouterLink class="hidden sm:block" to="/register"
+          >Registrarse</RouterLink
+        >
       </div>
     </div>
   </header>
@@ -32,6 +49,7 @@ export default {
 
     return {
       user,
+      userStore,
     };
   },
 };
