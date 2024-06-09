@@ -5,7 +5,10 @@
     </RouterLink>
     <div>
       <span v-if="user">{{ `Hola, ${user.name}` }}</span>
-      <RouterLink v-else to="/login">Iniciar sesión</RouterLink>
+      <div v-else class="flex gap-2">
+        <RouterLink to="/login">Iniciar sesión</RouterLink>
+        <RouterLink class="hidden sm:block" to="/register">Registrarse</RouterLink>
+      </div>
     </div>
   </header>
 </template>

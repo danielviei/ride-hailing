@@ -3,13 +3,13 @@
     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <TextField
         id="email"
-        label="Email"
+        label="Correo electrónico"
         v-model="email"
         placeholder="Ingrese su correo electrónico"
       />
       <PasswordField
         id="password"
-        label="Password"
+        label="Contraseña"
         v-model="password"
         placeholder="Ingrese su contraseña"
       />
@@ -22,9 +22,13 @@
           type="button"
           @click="login"
         >
-          Sign In
+          Iniciar sesión
         </button>
       </div>
+      <RouterLink class="block mt-4" to="/register">
+        No tienes cuenta?
+        <span class="text-blue-500"> Regístrate </span>
+      </RouterLink>
     </form>
   </div>
 </template>
