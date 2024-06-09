@@ -30,11 +30,12 @@
       <p v-if="errors?.password" class="text-red-500 p-4">
         La contraseña debe tener al menos 6 caracteres
       </p>
-      <p class="text-red-500 p-4">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="text-red-500 p-4">{{ errorMessage }}</p>
+      <LoadingSpinner :isLoading="isLoading" />
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         type="submit"
-        @click="login"
+        v-if="!isLoading"
       >
         Registrarse
       </button>
@@ -50,18 +51,21 @@
 import { registerUser } from "@/api/auth";
 import TextField from "../components/TextField.vue";
 import PasswordField from "../components/PasswordField.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import { useToast } from "vue-toastification";
 
 export default {
   components: {
     TextField,
     PasswordField,
+    LoadingSpinner,
   },
   data() {
     return {
       name: "",
       email: "",
       password: "",
+      isLoading: false,
       errorMessage: "",
       errors: {},
     };
@@ -73,6 +77,7 @@ export default {
   methods: {
     async registerUser() {
       try {
+        this.isLoading = true;
         await registerUser({
           name: this.name,
           email: this.email,
@@ -84,6 +89,8 @@ export default {
         this.errorMessage = error.response?.data?.message;
         this.errors = error.response?.data;
         this.toast.error("Error al registrar usuario");
+      } finally {
+        this.isLoading = false;
       }
     },
   },

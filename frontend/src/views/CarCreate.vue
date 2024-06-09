@@ -1,13 +1,7 @@
 <template>
-  <div v-if="isAuth" class="w-full max-w-xs mx-auto mt-20">
-    <div v-if="isLoading" class="animate-pulse h-[90vh]">
-      <div class="flex items-center justify-center h-full">
-        <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-        <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-        <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-      </div>
-    </div>
-    <div v-else>
+  <div v-if="userStore.isAuthenticated" class="w-full max-w-xs mx-auto mt-20">
+    <LoadingSpinner :isLoading="isLoading" />
+    <div v-if="!isLoading">
       <h1 class="text-2xl bold">
         {{ isCreate ? "Crear nuevo vehículo" : "Actualizar vehículo" }}
       </h1>
@@ -69,7 +63,21 @@
     </div>
   </div>
   <div v-else>
-    <h1 class="text-2xl bold">Debes iniciar sesión para crear un vehículo</h1>
+    <div class="w-full max-w-md mx-auto mt-20">
+      <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <p class="mt-4">
+          Por favor,
+          <RouterLink to="/login" class="text-blue-500 underline"
+            >inicia sesión</RouterLink
+          >
+          o
+          <RouterLink to="/register" class="text-blue-500 underline"
+            >regístrate</RouterLink
+          >
+          para poder agregar un vehículo.
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -92,7 +100,6 @@ export default {
       model: "",
       year: "",
       status: "",
-      isAuth: useUserStore().isAuthenticated,
       errors: {},
       isCreate: this.$route.params.id === "create",
       isLoading: false,
@@ -100,7 +107,8 @@ export default {
   },
   setup() {
     const toast = useToast();
-    return { toast };
+    const userStore = useUserStore();
+    return { toast, userStore };
   },
   async mounted() {
     if (!this.isCreate) {
@@ -122,6 +130,7 @@ export default {
   methods: {
     async createCar() {
       try {
+        this.isLoading = true;
         if (this.isCreate) {
           await postCar({
             brand: this.brand,
@@ -147,16 +156,21 @@ export default {
         );
         console.error(error);
         this.errors = error.response.data;
+      } finally {
+        this.isLoading = false;
       }
     },
     async deleteCar() {
       try {
+        this.isLoading = true;
         await deleteCar(this.$route.params.id);
         this.toast.success("Vehículo eliminado correctamente");
         this.$router.push({ name: "Home" });
       } catch (error) {
         this.toast.error("Error al eliminar el vehículo");
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },

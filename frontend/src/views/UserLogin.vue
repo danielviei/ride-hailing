@@ -14,9 +14,10 @@
         placeholder="Ingrese su contraseña"
       />
 
-      <p class="text-red-500 p-4">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="text-red-500 p-4 mt-2">{{ errorMessage }}</p>
 
-      <div class="flex items-center justify-center">
+      <LoadingSpinner :isLoading="isLoading" />
+      <div v-if="!isLoading" class="flex items-center justify-center">
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
@@ -36,6 +37,7 @@
 <script>
 import TextField from "../components/TextField.vue";
 import PasswordField from "../components/PasswordField.vue";
+import LoadingSpinner from "../components/LoadingSpinner.vue";
 import { login } from "@/api/auth";
 import { useToast } from "vue-toastification";
 
@@ -44,12 +46,14 @@ export default {
   components: {
     TextField,
     PasswordField,
+    LoadingSpinner,
   },
   data() {
     return {
       email: "",
       password: "",
       errorMessage: "",
+      isLoading: false,
     };
   },
   setup() {
@@ -58,6 +62,7 @@ export default {
   },
   methods: {
     login() {
+      this.isLoading = true;
       login(this.email, this.password)
         .then(() => {
           this.toast.success("Inicio de sesión exitoso");
@@ -69,6 +74,9 @@ export default {
             return;
           }
           this.errorMessage = error.response.data.message;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

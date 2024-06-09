@@ -2,15 +2,11 @@
   <div class="flex flex-col">
     <div class="-my-2 overflow-x-auto">
       <div class="py-2 align-middle inline-block min-w-full">
-        <div v-if="isLoading" class="animate-pulse h-[90vh]">
-          <div class="flex items-center justify-center h-full">
-            <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-            <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-            <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-          </div>
+        <div v-if="isLoading" class="h-[90vh]">
+          <LoadingSpinner class="h-full" :isLoading="isLoading" />
         </div>
         <div
-          v-else
+          v-if="!isLoading"
           class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
         >
           <div v-if="!vehicles.length && !isLoading">
@@ -50,9 +46,7 @@
                 <th
                   scope="col"
                   class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Editar
-                </th>
+                ></th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -144,10 +138,12 @@
 import { getCars } from "@/api/cars";
 import CarItem from "./CarItem.vue";
 import { useToast } from "vue-toastification";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default {
   components: {
     CarItem,
+    LoadingSpinner,
   },
   data() {
     return {

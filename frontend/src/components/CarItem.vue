@@ -8,6 +8,7 @@
     <div class="text-sm text-gray-500">{{ vehicle.year }}</div>
     <div class="flex flex-col w-full items-center justify-center">
       <SelectStatusCar
+        v-if="!isLoading"
         :extraClasses="`text-sm text-center text-gray-500 rounded-lg ${
           index % 2 === 0 ? 'bg-white' : 'bg-blue-100'
         }`"
@@ -16,6 +17,7 @@
         v-model="status"
         @update:modelValue="updateStatus"
       />
+      <LoadingSpinner :isLoading="isLoading" />
       <p v-if="errorMessages" class="text-red-500 p-4">
         {{ errorMessages }}
       </p>
@@ -65,8 +67,10 @@
           label=""
           v-model="status"
           @update:modelValue="updateStatus"
+          v-if="!isLoading"
         />
       </div>
+      <LoadingSpinner :isLoading="isLoading" />
       <p v-if="errorMessages" class="text-red-500 p-4">
         {{ errorMessages }}
       </p>
@@ -96,17 +100,20 @@
 
 <script>
 import SelectStatusCar from "./SelectStatusCar.vue";
+import LoadingSpinner from "./LoadingSpinner.vue";
 import { changeCarStatus } from "@/api/cars";
 import { useToast } from "vue-toastification";
 
 export default {
   components: {
     SelectStatusCar,
+    LoadingSpinner,
   },
   data() {
     return {
       status: this.vehicle.status,
       errorMessages: null,
+      isLoading: false,
     };
   },
   setup() {
@@ -126,6 +133,7 @@ export default {
   methods: {
     async updateStatus(value) {
       try {
+        this.isLoading = true;
         await changeCarStatus(this.vehicle.id, value);
         this.toast.success("Estado cambiado correctamente");
         this.message = null;
@@ -144,6 +152,8 @@ export default {
           this.errorMessages = "Error al cambiar el estado";
         }
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
