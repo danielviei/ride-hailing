@@ -22,6 +22,7 @@ export default class AuthService {
         user: user.toJSON (),
       };
     } catch (error) {
+      console.log(error);
       if (error instanceof AuthenticationError) {
         throw new AuthenticationError (error.message);
       }
@@ -42,6 +43,8 @@ export default class AuthService {
     } catch (error) {
       if (error instanceof jwt.JsonWebTokenError) {
         throw new AuthenticationError ('Invalid token');
+      } else if (error instanceof ValidationError) {
+        throw new ValidationError ('El token de refrescamiento es requerido');
       }
       throw new ServerError ('Server error');
     }
