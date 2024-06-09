@@ -137,6 +137,7 @@
 <script>
 import { getCars } from "@/api/cars";
 import CarItem from "./CarItem.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   components: {
@@ -151,6 +152,10 @@ export default {
       totalPages: 0,
       isLoading: false,
     };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   async mounted() {
     try {
@@ -173,6 +178,7 @@ export default {
 
         this.$router.push({ query: { page } });
       } catch (error) {
+        this.toast.error("Error al cargar los vehículos");
         console.error(error);
       } finally {
         this.isLoading = false;

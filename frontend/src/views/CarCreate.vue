@@ -58,6 +58,7 @@ import TextField from "../components/TextField.vue";
 import SelectStatusCar from "../components/SelectStatusCar.vue";
 import { postCar } from "@/api/cars";
 import { useUserStore } from "@/stores/userStore";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "CarCreate",
@@ -75,6 +76,10 @@ export default {
       errors: {},
     };
   },
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   methods: {
     async createCar() {
       try {
@@ -84,8 +89,10 @@ export default {
           year: this.year,
           status: this.status,
         });
+        this.toast.success("Vehículo creado correctamente");
         this.$router.push({ name: "Home" });
       } catch (error) {
+        this.toast.error("Error al crear el vehículo");
         console.error(error);
         this.errors = error.response.data;
       }

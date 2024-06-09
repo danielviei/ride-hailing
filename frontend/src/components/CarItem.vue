@@ -60,6 +60,7 @@
 <script>
 import SelectStatusCar from "./SelectStatusCar.vue";
 import { changeCarStatus } from "@/api/cars";
+import { useToast } from "vue-toastification";
 
 export default {
   components: {
@@ -70,6 +71,10 @@ export default {
       status: this.vehicle.status,
       errorMessages: null,
     };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   props: {
     vehicle: {
@@ -85,8 +90,10 @@ export default {
     async updateStatus(value) {
       try {
         await changeCarStatus(this.vehicle.id, value);
+        this.toast.success("Estado cambiado correctamente");
         this.message = null;
       } catch (error) {
+        this.toast.error("Error al cambiar el estado");
         this.status = this.vehicle.status;
         if (error.response?.status === 401) {
           this.errorMessages = "Debes iniciar sesión para cambiar el estado";

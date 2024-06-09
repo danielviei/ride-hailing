@@ -37,6 +37,7 @@
 import TextField from "../components/TextField.vue";
 import PasswordField from "../components/PasswordField.vue";
 import { login } from "@/api/auth";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "UserLogin",
@@ -51,13 +52,19 @@ export default {
       errorMessage: "",
     };
   },
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   methods: {
     login() {
       login(this.email, this.password)
         .then(() => {
+          this.toast.success("Inicio de sesión exitoso");
           this.$router.push({ name: "Home" });
         })
         .catch((error) => {
+          this.toast.error("Error al iniciar sesión");
           if (!error.response) {
             return;
           }

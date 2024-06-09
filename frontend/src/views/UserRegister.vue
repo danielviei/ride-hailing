@@ -11,18 +11,25 @@
         v-model="email"
         placeholder="Ingrese su correo electrónico"
       />
+      <p v-if="errors?.email" class="text-red-500 p-4">
+        Ingrese un correo electrónico válido
+      </p>
       <TextField
         id="name"
         label="Nombre"
         v-model="name"
         placeholder="Ingrese su nombre"
       />
+      <p v-if="errors?.name" class="text-red-500 p-4">El nombre es requerido</p>
       <PasswordField
         id="password"
         label="Contraseña"
         v-model="password"
         placeholder="Ingrese su contraseña"
       />
+      <p v-if="errors?.password" class="text-red-500 p-4">
+        La contraseña debe tener al menos 6 caracteres
+      </p>
       <p class="text-red-500 p-4">{{ errorMessage }}</p>
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -31,11 +38,10 @@
       >
         Registrarse
       </button>
-      <RouterLink class="block mt-4" to="/login">Ya tienes cuenta?
-        <span class="text-blue-500">
-         Inicia sesión
-        </span>
-        </RouterLink>
+      <RouterLink class="block mt-4" to="/login"
+        >Ya tienes cuenta?
+        <span class="text-blue-500"> Inicia sesión </span>
+      </RouterLink>
     </form>
   </div>
 </template>
@@ -44,6 +50,7 @@
 import { registerUser } from "@/api/auth";
 import TextField from "../components/TextField.vue";
 import PasswordField from "../components/PasswordField.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   components: {
@@ -56,7 +63,12 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
+      errors: {},
     };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   methods: {
     async registerUser() {
@@ -66,9 +78,12 @@ export default {
           email: this.email,
           password: this.password,
         });
+        this.toast.success("Usuario registrado correctamente");
         this.$router.push({ name: "Login" });
       } catch (error) {
         this.errorMessage = error.response?.data?.message;
+        this.errors = error.response?.data;
+        this.toast.error("Error al registrar usuario");
       }
     },
   },
