@@ -7,7 +7,8 @@
       :id="id"
       :value="modelValue"
       @input="updateValue($event.target.value)"
-      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      :class="extraClasses"
       placeholder="Seleccione un estado"
     >
       <option value="" disabled v-if="!modelValue">Seleccione un estado</option>
@@ -33,6 +34,10 @@ export default {
       type: String,
       required: true,
       default: "disponible",
+    },
+    extraClasses: {
+      type: String,
+      default: "",
     },
   },
   methods: {

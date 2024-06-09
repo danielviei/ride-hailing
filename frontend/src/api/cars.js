@@ -12,3 +12,13 @@ export async function postCar (carData) {
   await assertApiError (resp);
   return resp.data;
 }
+
+export async function changeCarStatus (carId, status) {
+  const resp = await api.patch (
+    `/cars/${carId}`,
+    {status},
+    makeAuthFetchOptions ()
+  );
+  await assertApiError (resp);
+  return resp.data;
+}

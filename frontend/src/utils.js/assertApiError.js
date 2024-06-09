@@ -2,7 +2,6 @@ export const _assertApiError = status =>
   status < 200 || status >= 300 || status === undefined || status === null;
 
 export async function assertApiError (resp) {
-  console.log(resp.status);
   if (!_assertApiError (resp.status)) return;
 
   const error = new Error (`[API ERROR] (${resp.url})`);
