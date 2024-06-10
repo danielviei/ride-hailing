@@ -7,6 +7,10 @@ export default async function connectDB () {
     await mongoose.connect (dbURL, {});
     console.log ('Conexión a la base de datos exitosa');
   } catch (error) {
-    console.error ('Error al conectar a la base de datos', error);
+    try {
+      await mongoose.connect (`${dbURL}?authSource=admin`, {});
+    } catch (error) {
+      console.error ('Error al conectar a la base de datos', error);
+    }
   }
 }
