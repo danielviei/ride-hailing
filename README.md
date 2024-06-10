@@ -40,6 +40,16 @@ Antes de poder ejecutar la aplicación, necesitarás establecer las siguientes v
 
 ⚠️ Asegúrate de que el usuario y la contraseña proporcionados para MongoDB tienen los permisos necesarios para acceder a la base de datos especificada.
 
+### Iniciando MongoDB con Docker
+
+Puedes iniciar una base de datos con mongo usando el siguiente comando
+
+```bash
+docker run --name mongo-ride-hailing -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=username -e MONGO_INITDB_ROOT_PASSWORD=password -d mongo
+```
+
+Solo recuerda usar el username y password que desees y agregarlo al archivo .env
+
 ### Secret para JWT
 
 - `JWT_SECRET`: La clave secreta utilizada para firmar los tokens JWT. Asegúrate de que sea una cadena larga y segura.
